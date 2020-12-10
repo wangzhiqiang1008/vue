@@ -7,22 +7,22 @@
       <div class="grid-content bg-purple">
         <el-form ref="form" :model="mq2" label-width="130px" size="medium">
           <el-form-item label="topic名称">
-            <el-input v-model="mq2.topicName" />
+            <el-input v-model="mq2.topicName" placeholder="eg: ****_xw" />
           </el-form-item>
           <el-form-item label="group名称">
-            <el-input v-model="mq2.groupName" />
+            <el-input v-model="mq2.groupName" placeholder="eg: cg_****_xw" />
           </el-form-item>
           <el-form-item label="负责人">
-            <el-input v-model="mq2.contractors" />
+            <el-input v-model="mq2.contractors" placeholder="邮箱前缀 分号分隔 eg: chrismatemating_v;arlenechenmeng_v" />
           </el-form-item>
           <el-form-item label="MQ描述">
-            <el-input v-model="mq2.desc" />
+            <el-input v-model="mq2.desc" placeholder="描述一下这个MQ的用途" />
           </el-form-item>
           <el-form-item label="cpoy集群MQ后缀">
-            <el-input v-model="mq2.suffix" />
+            <el-input v-model="mq2.suffix" placeholder="逗号分隔 必须带COPY eg: COPY_test_xiaoma,COPY_test_wzq" />
           </el-form-item>
           <el-form-item label="其他环境MQ标识">
-            <el-input v-model="mq2.envTag" />
+            <el-input v-model="mq2.envTag" placeholder="逗号分隔 用这些标识替换_xw eg: _gj,_cm" />
           </el-form-item>
           <el-form-item>
             <el-button :disabled="saveBtnDisabled" type="primary" @click="saveMqEnv2">保存</el-button>
@@ -38,16 +38,16 @@
       <div class="grid-content bg-purple-light">
         <el-form ref="form" :model="mq3" label-width="120px" size="medium">
           <el-form-item label="topic名称">
-            <el-input v-model="mq3.topicName" />
+            <el-input v-model="mq3.topicName" placeholder="eg: ****_xw" />
           </el-form-item>
           <el-form-item label="group名称">
-            <el-input v-model="mq3.groupName" />
+            <el-input v-model="mq3.groupName" placeholder="eg: cg_****_xw" />
           </el-form-item>
           <el-form-item label="负责人">
-            <el-input v-model="mq3.contractors" />
+            <el-input v-model="mq3.contractors" placeholder="邮箱前缀 分号分隔 eg: chrismatemating_v;arlenechenmeng_v" />
           </el-form-item>
           <el-form-item label="MQ描述">
-            <el-input v-model="mq3.desc" />
+            <el-input v-model="mq3.desc" placeholder="描述一下这个MQ的用途" />
           </el-form-item>
           <el-form-item>
             <el-button :disabled="saveBtnDisabled" type="primary" @click="saveMqEnv3">保存</el-button>
