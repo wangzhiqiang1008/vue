@@ -38,10 +38,10 @@
       <div class="grid-content bg-purple-light">
         <el-form ref="form" :model="mq3" label-width="120px" size="medium">
           <el-form-item label="topic名称">
-            <el-input v-model="mq3.topicName" placeholder="eg: ****_xw" />
+            <el-input v-model="mq3.topicName" placeholder="eg: ****_gj" />
           </el-form-item>
           <el-form-item label="group名称">
-            <el-input v-model="mq3.groupName" placeholder="eg: cg_****_xw" />
+            <el-input v-model="mq3.groupName" placeholder="eg: cg_****_gj" />
           </el-form-item>
           <el-form-item label="负责人">
             <el-input v-model="mq3.contractors" placeholder="邮箱前缀 分号分隔 eg: chrismatemating_v;arlenechenmeng_v" />
