@@ -117,12 +117,12 @@ export const constantRoutes = [
         component: () => import('@/views/env/creat'),
         meta: { title: '新建订阅关系', icon: 'el-icon-link' }
       },
-      {
-        path: 'save',
-        name: '添加MQ',
-        component: () => import('@/views/env/save'),
-        meta: { title: '添加MQ', icon: 'el-icon-edit' }
-      },
+      // {
+      //   path: 'save',
+      //   name: '添加MQ',
+      //   component: () => import('@/views/env/save'),
+      //   meta: { title: '添加MQ', icon: 'el-icon-edit' }
+      // },
       {
         path: 'tree',
         name: 'MQ信息列表',
@@ -140,15 +140,15 @@ export const constantRoutes = [
   },
 
   {
-    path: '/form',
-    name: 'mock服务',
+    path: '/restart',
+    name: '服务自动重启',
     component: Layout,
     children: [
       {
         path: 'index',
-        name: 'mock服务',
-        component: () => import('@/views/form'),
-        meta: { title: 'Form', icon: 'el-icon-umbrella' }
+        name: '自动重启服务',
+        component: () => import('@/views/restart'),
+        meta: { title: '服务自动重启', icon: 'el-icon-umbrella' }
       }
     ]
   },

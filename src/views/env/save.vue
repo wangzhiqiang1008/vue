@@ -1,6 +1,10 @@
 <template>
   <el-row>
     <el-col :span="12">
+     <el-card class="box-card">
+      <div id="wrapper" slot="header" class="clearfix" >
+          <span style="text-align: center;display:block;">修改MQ信息</span>
+      </div>
       <div class="grid-content">
 
         <el-form ref="form" :model="mq" label-width="120px" size="medium">
@@ -25,6 +29,8 @@
           </el-form-item>
         </el-form>
       </div>
+
+     </el-card>
     </el-col>
   </el-row>
 </template>
@@ -90,3 +96,6 @@ export default {
   }
 }
 </script>
+
+<style >
+</style>

@@ -2,7 +2,7 @@
 
     <div class="content-wrapper">
        <el-row :gutter="19">
-        <el-col :span="12">
+        <el-col :span="11">
         <div class="titleline" style="text-align:center">
             <el-tag type="danger" size="medium" color="#409EFF">环境二创建MQ</el-tag>
         </div>
@@ -21,14 +21,14 @@
             <el-form-item label="MQ描述">
                 <el-input v-model="mq2.desc" placeholder="描述一下这个MQ的用途" />
             </el-form-item>
-            <el-form-item label="cpoy集群后缀">
+            <el-form-item label="cpoy集群MQ后缀">
                 <el-input v-model="mq2.suffix" placeholder="逗号分隔 必须带COPY eg: COPY_test_xiaoma,COPY_test_wzq" />
             </el-form-item>
             <el-form-item label="其他环境MQ标识">
                 <el-input v-model="mq2.envTag" placeholder="逗号分隔 用这些标识替换_xw eg: _gj,_cm" />
             </el-form-item>
             <el-form-item>
-                <el-button :disabled="saveBtnDisabled" type="primary" @click="saveMqEnv2">开始创建</el-button>
+                <el-button :disabled="saveBtnDisabled" type="primary" @click="saveMqEnv2">保存</el-button>
             </el-form-item>
             </el-form>
          </div>
@@ -57,7 +57,7 @@
                     <el-input v-model="mq3.desc" placeholder="描述一下这个MQ的用途" />
                 </el-form-item>
                 <el-form-item>
-                    <el-button :disabled="saveBtnDisabled" type="primary" @click="saveMqEnv3">开始创建</el-button>
+                    <el-button :disabled="saveBtnDisabled" type="primary" @click="saveMqEnv3">保存</el-button>
                 </el-form-item>
                 </el-form>
             </div>
@@ -65,31 +65,6 @@
         </el-col>
 
       </el-row>
-
-      <el-row :gutter="19">
-        <el-col :span="12">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <span style="text-align: center;display:block;">新建COPY集群MQ</span>
-            </div>
-
-            <div class="grid-content bg-purple-light">
-              <el-form ref="form" :model="copyMq" label-width="120px" size="medium">
-              <el-form-item label="负责人">
-                  <el-input v-model="copyMq.contractors" placeholder="邮箱前缀 分号分隔 eg: chrismatemating_v;arlenechenmeng_v" />
-              </el-form-item>
-              <el-form-item label="cpoy集群后缀">
-                <el-input v-model="copyMq.suffix" placeholder="逗号分隔 必须带COPY eg: COPY_test_xiaoma,COPY_test_wzq" />
-            </el-form-item>
-              <el-form-item>
-                  <el-button :disabled="saveBtnDisabled" type="primary" @click="copyMqEnv">开始创建</el-button>
-              </el-form-item>
-              </el-form>
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
-
     </div>
 </template>
 
@@ -108,9 +83,6 @@ export default {
         envTag: null
       },
       mq3: {
-
-      },
-      copyMq: {
 
       },
       saveBtnDisabled: false // 保存按钮是否禁用
@@ -150,18 +122,6 @@ export default {
     },
     saveMqEnv3() {
       mqApi.createMq(this.mq3)
-        .then(response => {
-          // 提示成功
-          this.$message({
-            type: 'success',
-            message: '添加成功!'
-          })
-          // 路由跳转
-          this.$router.push({ path: '/env/tree' })
-        })
-    },
-    copyMqEnv(){
-      mqApi.copyMq(this.copyMq)
         .then(response => {
           // 提示成功
           this.$message({

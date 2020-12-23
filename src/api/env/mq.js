@@ -34,6 +34,14 @@ export default {
       data: mq
     })
   },
+  // copy MQ订阅关系
+  copyMq(mq) {
+    return request({
+      url: `/anymock/DiDiMq/copyMqByEnvTag`,
+      method: 'post',
+      data: mq
+    })
+  },
   // 查询MQ
   queryMq(id) {
     return request({
