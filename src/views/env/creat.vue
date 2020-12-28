@@ -79,7 +79,7 @@
                   <el-input v-model="copyMq.contractors" placeholder="邮箱前缀 分号分隔 eg: chrismatemating_v;arlenechenmeng_v" />
               </el-form-item>
               <el-form-item label="cpoy集群后缀">
-                <el-input v-model="copyMq.suffix" placeholder="逗号分隔 必须带COPY eg: COPY_test_xiaoma,COPY_test_wzq" />
+                <el-input v-model="copyMq.suffix" placeholder="必须带COPY eg: COPY_test_xiaoma" />
             </el-form-item>
               <el-form-item>
                   <el-button :disabled="saveBtnDisabled" type="primary" @click="copyMqEnv">开始创建</el-button>

@@ -53,57 +53,6 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
-
-  // {
-  //   path: '/example',
-  //   component: Layout,
-  //   redirect: '/example/table',
-  //   name: 'Example',
-  //   meta: { title: 'Example', icon: 'el-icon-s-help' },
-  //   children: [
-  //     {
-  //       path: 'table',
-  //       name: 'Table',
-  //       component: () => import('@/views/table/index'),
-  //       meta: { title: 'Table', icon: 'table' }
-  //     },
-  //     {
-  //       path: 'tree',
-  //       name: 'Tree',
-  //       component: () => import('@/views/tree/index'),
-  //       meta: { title: 'Tree', icon: 'tree' }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/teacher',
-  //   component: Layout,
-  //   redirect: '/teacher/table',
-  //   name: '讲师管理',
-  //   meta: { title: '讲师管理', icon: 'el-icon-s-help' },
-  //   children: [
-  //     {
-  //       path: 'table',
-  //       name: '讲师列表',
-  //       component: () => import('@/views/edu/teacher/list'),
-  //       meta: { title: '讲师列表', icon: 'table' }
-  //     },
-  //     {
-  //       path: 'tree',
-  //       name: '添加讲师',
-  //       component: () => import('@/views/edu/teacher/save'),
-  //       meta: { title: '添加讲师', icon: 'tree' }
-  //     },
-  //     {
-  //       path: 'edit/:id',
-  //       name: '添加讲师',
-  //       component: () => import('@/views/edu/teacher/save'),
-  //       meta: { title: '编辑讲师', icon: 'tree' },
-  //       hidden: true
-  //     }
-  //   ]
-  // },
-
   {
     path: '/env',
     component: Layout,
@@ -142,15 +91,22 @@ export const constantRoutes = [
   {
     path: '/restart',
     name: '服务自动重启',
+    redirect: '/restart/table',
     component: Layout,
+    meta: { title: '服务管理', icon: 'el-icon-umbrella' },
     children: [
       {
         path: 'index',
         name: '自动重启服务',
-        component: () => import('@/views/restart'),
+        component: () => import('@/views/restart/creat'),
         meta: { title: '服务自动重启', icon: 'el-icon-umbrella' }
-      }
-    ]
+      },
+      {
+        path: 'list',
+        name: '重启服务列表',
+        component: () => import('@/views/restart/list'),
+        meta: { title: '服务自动重启', icon: 'el-icon-umbrella' }
+      },]
   },
 
   {
