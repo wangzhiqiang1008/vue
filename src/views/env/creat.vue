@@ -70,7 +70,7 @@
         <el-col :span="12">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <span style="text-align: center;display:block;">新建COPY集群MQ</span>
+              <span style="text-align: center;display:block;">新建整套COPY集群MQ</span>
             </div>
 
             <div class="grid-content bg-purple-light">
@@ -87,9 +87,34 @@
               </el-form>
             </div>
           </el-card>
+        </el-col>  
+       <el-col :span="12">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span style="text-align: center;display:block;">新建单个COPY集群MQ</span>
+            </div>
+            <div class="grid-content bg-purple-light">
+            <el-form ref="form" :model="copyMq2" label-width="120px" size="medium">
+            <el-form-item label="topic名称">
+                <el-input v-model="copyMq2.topicName" placeholder="eg: ****_xw" />
+            </el-form-item>
+            <el-form-item label="group名称">
+                <el-input v-model="copyMq2.groupName" placeholder="eg: cg_****_xw" />
+            </el-form-item>
+              <el-form-item label="负责人">
+                  <el-input v-model="copyMq2.contractors" placeholder="邮箱前缀 分号分隔 eg: chrismatemating_v;arlenechenmeng_v" />
+              </el-form-item>
+              <el-form-item label="cpoy集群后缀">
+                <el-input v-model="copyMq2.suffix" placeholder="必须带COPY eg: COPY_test_xiaoma" />
+              </el-form-item>
+              <el-form-item>
+                  <el-button :disabled="saveBtnDisabled" type="primary" @click="copyMqEnv2">开始创建</el-button>
+              </el-form-item>
+              </el-form>
+            </div>
+          </el-card>
         </el-col>
       </el-row>
-
     </div>
 </template>
 
@@ -113,6 +138,10 @@ export default {
       copyMq: {
 
       },
+      copyMq2: {
+
+      },
+
       saveBtnDisabled: false // 保存按钮是否禁用
 
     }
@@ -162,6 +191,18 @@ export default {
     },
     copyMqEnv(){
       mqApi.copyMq(this.copyMq)
+        .then(response => {
+          // 提示成功
+          this.$message({
+            type: 'success',
+            message: '添加成功!'
+          })
+          // 路由跳转
+          this.$router.push({ path: '/env/tree' })
+        })
+    },
+    copyMqEnv2(){
+      mqApi.copyMq2(this.copyMq2)
         .then(response => {
           // 提示成功
           this.$message({

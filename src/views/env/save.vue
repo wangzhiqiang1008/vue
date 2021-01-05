@@ -89,7 +89,7 @@ export default {
             message: '修改成功!'
           })
           // 路由跳转
-          this.$router.push({ path: '/restart/list' })
+          this.$router.push({ path: '/env/tree' })
         })
     }
 

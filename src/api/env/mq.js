@@ -42,6 +42,14 @@ export default {
       data: mq
     })
   },
+  // copy单个 MQ订阅关系
+  copyMq2(mq) {
+    return request({
+      url: `/anymock/DiDiMq/copyMq`,
+      method: 'post',
+      data: mq
+    })
+  },
   // 查询MQ
   queryMq(id) {
     return request({
