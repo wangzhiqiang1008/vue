@@ -105,7 +105,7 @@
                   <el-input v-model="copyMq2.contractors" placeholder="邮箱前缀 分号分隔 eg: chrismatemating_v;arlenechenmeng_v" />
               </el-form-item>
               <el-form-item label="cpoy集群后缀">
-                <el-input v-model="copyMq2.suffix" placeholder="必须带COPY eg: COPY_test_xiaoma" />
+                <el-input v-model="copyMq2.suffixList" placeholder="必须带COPY eg: COPY_test_xiaoma" />
               </el-form-item>
               <el-form-item>
                   <el-button :disabled="saveBtnDisabled" type="primary" @click="copyMqEnv2">开始创建</el-button>
@@ -139,7 +139,10 @@ export default {
 
       },
       copyMq2: {
-
+        topicName: null,
+        groupName: null,
+        contractors: null,
+        suffixList: null
       },
 
       saveBtnDisabled: false // 保存按钮是否禁用
@@ -202,6 +205,7 @@ export default {
         })
     },
     copyMqEnv2(){
+      this.copyMq2.suffixList = this.copyMq2.suffixList.split(',')
       mqApi.copyMq2(this.copyMq2)
         .then(response => {
           // 提示成功
