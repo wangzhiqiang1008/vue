@@ -100,13 +100,7 @@ export const constantRoutes = [
         name: '自动重启服务',
         component: () => import('@/views/restart/creat'),
         meta: { title: '服务自动重启', icon: 'el-icon-umbrella' }
-      },
-      {
-        path: 'list',
-        name: '重启服务列表',
-        component: () => import('@/views/restart/list'),
-        meta: { title: '服务自动重启', icon: 'el-icon-umbrella' }
-      },]
+      }]
   },
 
   {

@@ -63,5 +63,26 @@ export default {
       method: 'post',
       data: mq
     })
-  }
+  },
+  doGetEnvData(ip){ 
+    return request({
+      url: `/anymock/env-list/findMachineByIp/${ip}`,
+      method: 'get'
+    })
+  },
+   
+// 添加服务信息
+addService(service) {
+  return request({
+    url: `/anymock/env-list/addEnvIpAndService`,
+    method: 'post',
+    data: service
+  })
+ },
+ getEnvList(){
+  return request({
+    url: `/anymock/env-list/finAllIp`,
+    method: 'get',
+  })
+ }
 }
