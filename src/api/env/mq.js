@@ -84,5 +84,25 @@ addService(service) {
     url: `/anymock/env-list/finAllIp`,
     method: 'get',
   })
- }
+ },
+ startService(ip){
+  return request({
+    url: `/anymock/env-list/findServiceByIp/${ip}`,
+    method: 'get'
+  })
+ },
+// TODO 
+  stopService(ip){
+    return request({
+      url: `/anymock/env-list/stopServiceByIp/${ip}`,
+      method: 'get'
+    })
+  } ,
+// TODO 
+  openService(ip){
+    return request({
+      url: `/anymock/env-list/startServiceByIp/${ip}`,
+      method: 'get'
+    })
+  }
 }

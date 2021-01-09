@@ -1,5 +1,32 @@
 <template>
+    
     <div class="content-wrapper">
+
+    <el-dialog title="宕机重启" :visible.sync="dialogFormVisible">
+    <el-table
+                v-loading="listLoading"
+                :data="serlist"
+                stripe
+                style="width: 100%"
+                element-loading-text="数据加载中"
+                border
+                fit
+                highlight-current-row
+                align="center"
+                  > 
+      <el-table-column label="序号" width="100" align="center">
+              <template slot-scope="scope">
+                {{ scope.$index +1 }}
+              </template>
+            </el-table-column>
+      <el-table-column prop="serviceName" label="服务名" width="400"  align="center"/>   
+    </el-table>     
+       <div slot="footer" class="dialog-footer">
+          <el-button type="warning" @click="closeOrUpdate()">全部关闭</el-button>
+          <el-button type="primary" @click="openOrUpdate()">全部开启</el-button>
+       </div>
+
+    </el-dialog>
        <el-row :gutter="19">
         <el-col :span="12">
             <el-card class="box-card">
@@ -47,28 +74,28 @@
             <div slot="header" class="clearfix">
                     <span style="text-align: center;display:block;">开启/关闭 自动重启</span>
             </div>
-            <div class="grid-content bg-purple-light">
+            <div class="grid-content bg-purple-light" >
                  <el-table
                     v-loading="listLoading"
                     :data="list"
                     stripe
                     style="width: 100%"
                     element-loading-text="数据加载中"
+                    :cell-style="cellStyle" 
                     border
                     fit
                     highlight-current-row
-                    align="center"
+                    align="center" 
                       >
                     <el-table-column label="序号" width="100" align="center">
                       <template slot-scope="scope">
                         {{ scope.$index +1 }}
                       </template>
                     </el-table-column>
-                    <el-table-column prop="ip" label="机器IP" width="300"  align="center"/>
+                    <el-table-column  prop="ip" label="机器IP" width="200"  align="center"/>
                     <el-table-column label="操作" width="200" align="center">
                       <template slot-scope="scope">
-                          <el-button type="primary" size="mini"  @click="changeDataById(scope.row.id)">宕机重启</el-button>
-                          <el-button type="danger" size="mini"  @click="removeDataById(scope.row.id)">关闭宕机重启</el-button>
+                          <el-button type="primary" size="mini"  @click="startByIp(scope.row.ip)">宕机重启</el-button>
                       </template>
                     </el-table-column>
                   </el-table>
@@ -84,7 +111,14 @@ import mqApi from '@/api/env/mq'
 export default {
   data() {
     return {
-      list: null,
+      service: {
+
+      },
+      serlist: {
+      },
+      list: {
+        ip:''
+      },
       machineTag: false,
       serviceTag: false,
       env: {
@@ -97,8 +131,8 @@ export default {
       },
       saveBtnDisabled: false ,// 保存按钮是否禁用
       //新增
-      dialogFormVisible: false,
-      form: {
+   dialogFormVisible: false, 
+   form: {
         name: '',
         region: '',
         date1: '',
@@ -119,6 +153,13 @@ export default {
     }
   },
   methods: {
+    cellStyle(row,column,rowIndex,columnIndex){//根据报警级别显示颜色
+        console.log("=========",row);
+        console.log("---------",row.column);
+        if(row.column.label=="机器IP"&& row.row.opend==1){
+          return 'color:red'
+        }
+      },
     // DONE
     doGetEnvData(ip){
         console.log('失去焦点触发, : ' + ip)
@@ -156,6 +197,7 @@ export default {
       mqApi.getEnvList( )
         .then(response => {
           this.list = response.data.list
+          console.log("-----------999999------"+list)
         })
         .catch(error => {
           console.log(error)
@@ -173,7 +215,47 @@ export default {
           // 路由跳转
           this.$router.push({ path: '/env/tree' })
         })
-    }
+    },
+    startByIp(ip){
+       this.dialogFormVisible = true
+       console.log("-------"+ip)
+       mqApi.startService(ip)
+        .then(response => {
+          this.serlist = response.data.ips
+          this.serlist.serviceIp = response.data.serviceIp
+        })
+    },
+    openOrUpdate(){
+      this.dialogFormVisible = false
+       console.log("-------"+this.serlist.serviceIp)
+       mqApi.openService(this.serlist.serviceIp)
+        .then(response => {
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+          // 路由跳转
+          this.$router.push({ path: '/restart/index' })
+          // this.serlist = response.data.ips
+        })
+    },
+    closeOrUpdate(){
+      this.dialogFormVisible = false
+       console.log("-------"+this.serlist.serviceIp)
+       mqApi.stopService(this.serlist.serviceIp)
+        .then(response => {
+
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+          // 路由跳转
+          this.$router.push({ path: '/restart/index' })
+          // this.serlist = response.data.ips
+        })
+    },
+
+
 
   }
 }
