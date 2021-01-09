@@ -156,7 +156,7 @@ export default {
     cellStyle(row,column,rowIndex,columnIndex){//根据报警级别显示颜色
         console.log("=========",row);
         console.log("---------",row.column);
-        if(row.column.label=="机器IP"&& row.row.opend==1){
+        if(row.column.label=="机器IP"&& row.row.opend==0){
           return 'color:red'
         }
       },
@@ -236,6 +236,7 @@ export default {
           })
           // 路由跳转
           this.$router.push({ path: '/restart/index' })
+          this.getList()
           // this.serlist = response.data.ips
         })
     },
@@ -251,6 +252,7 @@ export default {
           })
           // 路由跳转
           this.$router.push({ path: '/restart/index' })
+          this.getList()
           // this.serlist = response.data.ips
         })
     },
