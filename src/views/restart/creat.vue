@@ -181,10 +181,13 @@ export default {
             message: '添加成功!'
           })
           // 路由跳转
+          this.$router.push({ path: '/restart/index' })
+          this.getList()
         })
        .catch(error => {
           console.log(error)
         })
+      
       
     },
     getInfo(id) {
