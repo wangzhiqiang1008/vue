@@ -127,7 +127,7 @@ export default {
       mq2: {
         topicName: null,
         groupName: null,
-        contractors: null,
+        contractors: 'xuxuwei;changliying;weiyuanbao;louiswangzhiqiang;chrismatemating_v;abudongdawei_v',
         desc: null,
         suffix: 'COPY_test_xiaoma,COPY_env1',
         envTag: '_gj'
