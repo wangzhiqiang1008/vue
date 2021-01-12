@@ -129,8 +129,8 @@ export default {
         groupName: null,
         contractors: null,
         desc: null,
-        suffix: null,
-        envTag: null
+        suffix: 'COPY_test_xiaoma,COPY_env1',
+        envTag: '_gj'
       },
       mq3: {
 
