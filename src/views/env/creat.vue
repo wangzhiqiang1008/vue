@@ -15,16 +15,19 @@
             <el-form-item label="group名称">
                 <el-input v-model="mq2.groupName" placeholder="eg: cg_****_xw" />
             </el-form-item>
-            <el-form-item label="负责人">
-                <el-input v-model="mq2.contractors" placeholder="邮箱前缀 分号分隔 eg: chrismatemating_v;arlenechenmeng_v" />
-            </el-form-item>
             <el-form-item label="MQ描述">
                 <el-input v-model="mq2.desc" placeholder="描述一下这个MQ的用途" />
             </el-form-item>
-            <el-form-item label="cpoy集群后缀">
+            <el-form-item label="添加其他环境配置">
+                       <el-switch v-model="Tag" />
+                    </el-form-item>
+           <el-form-item v-if="Tag" label="负责人">
+                <el-input v-model="mq2.contractors" placeholder="邮箱前缀 分号分隔 eg: chrismatemating_v;arlenechenmeng_v" />
+            </el-form-item>            
+            <el-form-item v-if="Tag" label="cpoy集群后缀">
                 <el-input v-model="mq2.suffix" placeholder="逗号分隔 必须带COPY eg: COPY_test_xiaoma,COPY_test_wzq" />
             </el-form-item>
-            <el-form-item label="其他环境MQ标识">
+            <el-form-item v-if="Tag" label="其他环境MQ标识">
                 <el-input v-model="mq2.envTag" placeholder="逗号分隔 用这些标识替换_xw eg: _gj,_cm" />
             </el-form-item>
             <el-form-item>
@@ -124,10 +127,11 @@ import mqApi from '@/api/env/mq'
 export default {
   data() {
     return {
+      Tag: false,
       mq2: {
         topicName: null,
         groupName: null,
-        contractors: 'xuxuwei;changliying;weiyuanbao;louiswangzhiqiang;chrismatemating_v;abudongdawei_v',
+        contractors: 'xuxuwei;changliying;weiyuanbao;louiswangzhiqiang;chrismatemating_v;abudongdawei_v;arlenechenmeng_v',
         desc: null,
         suffix: 'COPY_test_xiaoma,COPY_env1',
         envTag: '_gj'
