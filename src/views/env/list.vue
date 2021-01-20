@@ -165,8 +165,6 @@ export default {
         .then(response => {
           this.mq1 = response.data.insuranceMq
         })
-    
-
     },
     // 更新
     updateMq() {

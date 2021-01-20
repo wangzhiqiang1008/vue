@@ -1,0 +1,211 @@
+<template>
+  <div class="app-container">
+      <!-- Form -->
+    <el-dialog title="配置文件修改"  width="80%" :visible.sync="dialogFormVisible">
+        <el-form ref="form" :model="conf1" label-width="1500px" size="medium">
+            <el-input type="textarea" autosize v-model="conf1.contents"/>
+        </el-form>
+      <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="saveOrUpdate">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <!--查询表单-->
+  <el-row :gutter="20">
+        <el-col :span="4">
+            <div class="grid-content bg-purple" align="center">
+                <el-button type="success" icon="el-icon-refresh-right" @click="pullConfList()">更新配置</el-button>
+            </div>
+        </el-col>
+        <el-col :span="16">
+        <div class="grid-content bg-purple">
+            <el-form :inline="true" :model="formInline" class="demo-form-inline" align="center">
+            <el-form-item>
+                <el-input v-model="confQuery.modularName" clearable placeholder="模块名" />
+            </el-form-item>
+            <el-form-item>
+                <el-input v-model="confQuery.applicationName" clearable placeholder="配置名" />
+            </el-form-item>
+            <el-form-item label="">
+                    <el-select v-model="confQuery.envTag" clearable placeholder="环境信息">
+                    <el-option :value="1" label="AllInOne 环境" />
+                    <el-option :value="2" label="环境二" />
+                    <el-option :value="3" label="环境三" />
+                    <el-option :value="4" label="环境四" />
+                    </el-select>
+                </el-form-item>
+            <el-button type="primary" icon="el-icon-search" @click="getList()">查询</el-button>
+            <el-button type="default" @click="resetData()">清空</el-button>
+            </el-form>
+        </div>
+        </el-col>
+  </el-row>
+    <!---表格---->
+
+    <el-table
+      v-loading="listLoading"
+      :data="list"
+      stripe
+      style="width: 100%"
+      element-loading-text="数据加载中"
+      border
+      fit
+      highlight-current-row>
+      <el-table-column label="序号" width="80" align="center">
+        <template slot-scope="scope">
+          {{ (page-1)* limit +scope.$index +1 }}
+
+        </template>
+      </el-table-column>
+      <el-table-column prop="modularName" label="模块名" width="250" align="center" />
+      <el-table-column prop="applicationName" label="配置名" width="180" align="center"/>
+      <el-table-column prop="envTag" label="环境" width="110" align="center">
+        <template slot-scope="scope">
+          {{ envJson[scope.row.envTag]}}
+        </template>
+      </el-table-column>
+      <el-table-column prop="user" label="操作人" width="80" align="center"/>
+      <el-table-column prop="createTime" label="创建时间" width="160" align="center"/>
+      <el-table-column prop="updateTime" label="更新时间" width="160" align="center"/>
+      <el-table-column label="操作" width="200" align="center">
+        <template slot-scope="scope">
+            <el-button type="primary" size="mini"  @click="changeDataById(scope.row.id)">同步配置</el-button>
+             <el-button type="warning" size="mini"  @click="changeDataById(scope.row.id)">历史版本</el-button>
+        </template>
+      </el-table-column>
+
+    </el-table>
+
+    <el-pagination
+      :current-page="page"
+      :page-size="limit"
+      :total="total"
+      style="padding: 30px 0; text-align: center;"
+      layout="total, prev, pager, next, jumper"
+      @current-change="getList"
+    />
+
+  </div>
+</template>
+<script>
+// 引入synchronization.js文件
+import synchronization from '@/api/env/synchronization'
+export default {
+  // 写核心代码
+  // data:{
+  // },
+
+  data() { // 定义变量 初始值
+    return {
+      envJson:{
+          '1':'AllInOne 环境',
+          '2':'环境二',
+          '3':'环境三',
+          '4':'环境四',
+      },
+      list: null,
+      page: 1,
+      limit: 10, // 每页记录数
+      total: 0,
+      confQuery: {}, // 条件封装对象
+      conf1: {},
+      // 新增
+        dialogFormVisible: false,
+        form: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: ''
+        },
+        formLabelWidth: '120px'
+
+
+    }
+  },
+  created() {
+    this.getList()
+  },
+  methods: {
+    getList(page =1) {
+      this.page = page
+      synchronization.getConfList(this.page, this.limit, this.confQuery)
+        .then(response => {
+          this.list = response.data.rows
+          this.total = response.data.total
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    pullConfList(){
+       synchronization.pullConf( )
+        .then(response => {
+          // 提示成功
+          this.$message({
+            type: 'success',
+            message: '同步成功!'
+          })
+        })
+         .catch(error => {
+          console.log(error)
+        })
+    },
+    saveOrUpdate() {
+      this.dialogFormVisible = false
+      this.updateConf()     
+    },
+    changeDataById(id) {
+       this.dialogFormVisible = true
+       synchronization.queryConf(id)
+        .then(response => {
+          this.conf1 = response.data.envSynchronization
+        })
+    },
+    // 更新
+    updateConf() {
+      synchronization.updateConf(this.conf1)
+        .then(response => {
+          // 提示成功
+          this.$message({
+            type: 'success',
+            message: '同步成功!'
+          })
+        // this.$router.push({ path: '/restart/list' })
+        this.getList()
+        })
+    },
+
+    resetData() {
+      this.confQuery = {}
+      this.getList()
+    },
+    removeDataById(id) {
+      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        mq.deleteMqId(id)
+          .then(response => {
+            this.getList()
+          })
+          .catch(error => {
+            console.log(error)
+          })
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      })
+    }
+
+  }
+
+}
+</script>
+
