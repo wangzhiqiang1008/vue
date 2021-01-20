@@ -175,7 +175,7 @@ export default {
             type: 'success',
             message: '同步成功!'
           })
-        // this.$router.push({ path: '/restart/list' })
+       // this.$router.push({ path: '/restart/list' })
         this.getList()
         })
     },
