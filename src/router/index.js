@@ -109,7 +109,15 @@ export const constantRoutes = [
         name: '环境同步',
         component: () => import('@/views/synchronization/creat'),
         meta: { title: '环境同步', icon: 'el-icon-refresh' }
-      }]
+      },
+      {
+        path: 'tree',
+        name: '规则设置',
+        component: () => import('@/views/synchronization/list'),
+        meta: { title: '规则设置', icon: 'el-icon-setting' }
+      },
+    
+    ]
   },
 
 

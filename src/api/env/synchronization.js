@@ -38,5 +38,26 @@ export default {
             url: `/anymock/rule-info/pullConf`,
             method: 'get',
           })
+      },
+      getRuleList(current, limit){
+        return request({
+          url: `/anymock/rule-info/pageRule/${current}/${limit}`,
+          method: 'get',
+          // data 表示对象转json
+        })
+      },
+      queryRule(id){
+        return request({
+          url: `/anymock/rule-info/getRule/${id}`,
+          method: 'get',
+        })
+      },
+      updateRule(conf){
+        return request({
+          url: `/anymock/rule-info/updateRule`,
+          method: 'post',
+          data: conf
+        })
       }
+
 }
