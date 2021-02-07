@@ -2,6 +2,12 @@
   <div class="app-container">
       <!-- Form -->
     <el-dialog title="配置文件修改"  width="80%" :visible.sync="dialogFormVisible">
+        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">所有环境全部同步</el-checkbox>
+        <div style="margin: 10px 15px;"></div>
+        <el-checkbox-group v-model="envList" @change="handleCheckedCitiesChange">
+          <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+        </el-checkbox-group>
+         <el-divider></el-divider>
         <el-form ref="form" :model="conf1" label-width="1500px" size="medium">
             <el-input type="textarea" autosize v-model="conf1.contents"/>
         </el-form>
@@ -89,6 +95,7 @@
   </div>
 </template>
 <script>
+const cityOptions = ['copy_env1', 'env2', 'env3', 'env4'];
 // 引入synchronization.js文件
 import synchronization from '@/api/env/synchronization'
 export default {
@@ -98,6 +105,11 @@ export default {
 
   data() { // 定义变量 初始值
     return {
+        checkAll: false,
+        envList: [],
+        cities: cityOptions,
+        isIndeterminate: true,
+
       envJson:{
           '1':'AllInOne 环境',
           '2':'环境二',
@@ -110,6 +122,15 @@ export default {
       total: 0,
       confQuery: {}, // 条件封装对象
       conf1: {},
+      updateConfParams: {
+          modularName: '',
+          applicationName: '',
+          envTag: '',
+          user: '',
+          contents: '',
+          version: '',
+          envList: [],
+      },
       // 新增
         dialogFormVisible: false,
         form: {
@@ -131,6 +152,15 @@ export default {
     this.getList()
   },
   methods: {
+    handleCheckAllChange(val) {
+        this.envList = val ? cityOptions : [];
+        this.isIndeterminate = false;
+      },
+    handleCheckedCitiesChange(value) {
+      let checkedCount = value.length;
+      this.checkAll = checkedCount === this.cities.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+    },
     getList(page =1) {
       this.page = page
       synchronization.getConfList(this.page, this.limit, this.confQuery)
@@ -168,7 +198,14 @@ export default {
     },
     // 更新
     updateConf() {
-      synchronization.updateConf(this.conf1)
+      this.updateConfParams.modularName=this.conf1.modularName
+      this.updateConfParams.applicationName=this.conf1.applicationName
+      this.updateConfParams.envTag=this.conf1.envTag
+      this.updateConfParams.user=this.conf1.user
+      this.updateConfParams.contents=this.conf1.contents
+      this.updateConfParams.version=this.conf1.version
+      this.updateConfParams.envList=this.envList
+      synchronization.updateConf(this.updateConfParams)
         .then(response => {
           // 提示成功
           this.$message({
