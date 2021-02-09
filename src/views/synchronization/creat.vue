@@ -324,8 +324,9 @@ export default {
           message: '回滚成功!'
         })
       })
-
-  }
+      this.dialogFormVisible1 = false
+    
+    }
 
 }
 }
