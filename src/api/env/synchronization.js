@@ -26,6 +26,13 @@ export default {
       
           })
       },
+      queryHistoryConf(id){
+        return request({
+            url: `/anymock/env-synchronization/getHistoryConf/${id}`,
+            method: 'get',
+      
+          })
+      },
       updateConf(conf){
         return request({
             url: `/anymock/rule-info/confSyn`,
@@ -57,6 +64,12 @@ export default {
           url: `/anymock/rule-info/updateRule`,
           method: 'post',
           data: conf
+        })
+      },
+      rollBackById(id){
+        return request({
+          url: `/anymock/rule-info/rollBackConf/${id}`,
+          method: 'get',
         })
       }
 

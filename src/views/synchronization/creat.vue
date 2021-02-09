@@ -16,6 +16,48 @@
           <el-button type="primary" @click="saveOrUpdate">确 定</el-button>
       </div>
     </el-dialog>
+    <!---展示历史配置文件--->
+   <el-dialog title="历史配置文件"  width="80%" :visible.sync="dialogFormVisibleView">
+        <el-form ref="form" :model="historyconf" label-width="1500px" size="medium">
+            <el-input type="textarea" autosize v-model="historyconf"/>
+        </el-form>
+      <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="dialogFormVisibleView = false">关闭</el-button>
+      </div>
+    </el-dialog>
+
+
+   <el-dialog title="配置文件历史版本"  width="80%" :visible.sync="dialogFormVisible1">
+        
+        <el-table
+          v-loading="listLoading"
+          :data="queryHistoryConfList"
+          stripe
+          style="width: 100%"
+          element-loading-text="数据加载中"
+          border
+          fit
+          highlight-current-row
+            >
+          <el-table-column label="序号" width="80" align="center">
+            <template slot-scope="scope">
+              {{ (page-1)* limit +scope.$index +1 }}
+
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="modularName" label="模块名称" width="250" />
+          <el-table-column align="center" prop="applicationName" label="配置名称" width="210" /> 
+          <el-table-column align="center" prop="createTime" label="创建时间" width="160" />
+          <el-table-column align="center" prop="updateTime" label="更新时间" width="160" />
+          <el-table-column label="操作" width="270" align="center">
+            <template slot-scope="scope">
+                <el-button type="primary" size="mini" icon="el-icon-view" @click="viewData(scope.row.contents)">查看</el-button>
+                <el-button type="warning" size="mini" icon="el-icon-refresh-left" @click="rollBackDataById(scope.row.id)">回滚到此版本</el-button>
+            </template>
+          </el-table-column>
+
+        </el-table>
+    </el-dialog>
 
     <!--查询表单-->
   <el-row :gutter="20">
@@ -77,7 +119,7 @@
       <el-table-column label="操作" width="200" align="center">
         <template slot-scope="scope">
             <el-button type="primary" size="mini"  @click="changeDataById(scope.row.id)">同步配置</el-button>
-             <el-button type="warning" size="mini"  @click="changeDataById(scope.row.id)">历史版本</el-button>
+             <el-button type="warning" size="mini"  @click="showHistoryById(scope.row.id)">历史版本</el-button>
         </template>
       </el-table-column>
 
@@ -117,11 +159,13 @@ export default {
           '4':'环境四',
       },
       list: null,
+      historyconf: null,
       page: 1,
       limit: 10, // 每页记录数
       total: 0,
       confQuery: {}, // 条件封装对象
       conf1: {},
+      queryHistoryConfList: null,
       updateConfParams: {
           modularName: '',
           applicationName: '',
@@ -133,6 +177,9 @@ export default {
       },
       // 新增
         dialogFormVisible: false,
+        dialogFormVisible1: false,
+        dialogFormVisibleView: false,
+
         form: {
           name: '',
           region: '',
@@ -196,6 +243,24 @@ export default {
           this.conf1 = response.data.envSynchronization
         })
     },
+    //历史展示页面
+    saveOrUpdateHistory() {
+      this.dialogFormVisible1 = false
+      this.updateConf()     
+    },
+    showHistoryById(id) {
+      this.dialogFormVisible1 = true
+      synchronization.queryHistoryConf(id)
+      .then(response => {
+        this.queryHistoryConfList = response.data.envSynchronization
+      })
+      },   
+   viewData(contents){
+        this.dialogFormVisibleView = true
+        console.log(contents)
+        this.historyconf = contents
+   },
+
     // 更新
     updateConf() {
       this.updateConfParams.modularName=this.conf1.modularName
@@ -239,10 +304,29 @@ export default {
           message: '删除成功!'
         })
       })
-    }
+    },
+    rollBackDataById(id) {
+      console.log(id)
+      this.$confirm('此操作会将配置回滚, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        synchronization.rollBackById(id)
+          .then(response => {
+            this.getList()
+          })
+          .catch(error => {
+            console.log(error)
+          })
+        this.$message({
+          type: 'success',
+          message: '回滚成功!'
+        })
+      })
 
   }
 
 }
+}
 </script>
-
